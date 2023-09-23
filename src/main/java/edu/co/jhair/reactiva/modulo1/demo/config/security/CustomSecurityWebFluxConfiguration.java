@@ -15,52 +15,20 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 public class CustomSecurityWebFluxConfiguration {
 
     @Bean
-    public SecurityWebFilterChain springSecurityWebFilterChain(ServerHttpSecurity serverHttpSecurity){
-        serverHttpSecurity.authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-                        .pathMatchers("/cliente/**").permitAll()
-                        .pathMatchers("/user/**").permitAll())
-                .httpBasic(Customizer.withDefaults())//Aqui permitimos peticiones HTTP (Navegador y Postman)
-                .csrf(ServerHttpSecurity.CsrfSpec::disable);//Esta linea es para evitar errores de token en los POST
-
-        serverHttpSecurity.authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/v2/cliente/**").authenticated())
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-                .httpBasic(Customizer.withDefaults())//Aqui permitimos peticiones HTTP (Navegador y Postman)
-                .csrf(ServerHttpSecurity.CsrfSpec::disable);//Esta linea es para evitar errores de token en los POST
-
-        return serverHttpSecurity.build();
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity httpSecurity){
+        httpSecurity.authorizeExchange(exchanges -> exchanges.anyExchange().authenticated())
+                .httpBasic(Customizer.withDefaults())
+        .csrf(ServerHttpSecurity.CsrfSpec::disable);
+        return httpSecurity.build();
     }
 
     @Bean
     public MapReactiveUserDetailsService userDetailsService() {
         UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build();
-        UserDetails admin = User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("password")
-                .roles("ADMIN")
-                .build();
-        return new MapReactiveUserDetailsService(user, admin);
-    }
-
-        /*@Bean
-    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity httpSecurity){
-        httpSecurity.authorizeExchange(exchanges -> exchanges.anyExchange().authenticated())
-                .httpBasic(Customizer.withDefaults());
-                //.csrf(ServerHttpSecurity.CsrfSpec::disable);
-        return httpSecurity.build();
-    }*/
-
-    /*public MapReactiveUserDetailsService userDetailsService(){
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("usuarioPoderoso")
-                .password("contrasenaPoderosa")
+                .username("jhairleal")
+                .password("12345678")
                 .roles("USER")
                 .build();
         return new MapReactiveUserDetailsService(user);
-    }*/
+    }
 }

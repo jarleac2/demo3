@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
 @RestController
-@RequestMapping("v2/cliente")
+@RequestMapping("/v2/cliente")
 public class ClienteController2 {
 
     ClienteService2 clienteService2;
