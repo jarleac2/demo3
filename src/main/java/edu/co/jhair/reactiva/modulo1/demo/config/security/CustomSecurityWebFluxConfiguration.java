@@ -18,7 +18,7 @@ public class CustomSecurityWebFluxConfiguration {
     public SecurityWebFilterChain springSecurityWebFilterChain(ServerHttpSecurity serverHttpSecurity){
         serverHttpSecurity.authorizeExchange(exchanges -> exchanges
                         .pathMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-                        .pathMatchers("/v2/cliente/**").permitAll()
+                        .pathMatchers("/cliente/**").permitAll()
                         .pathMatchers("/user/**").permitAll())
                 .httpBasic(Customizer.withDefaults())//Aqui permitimos peticiones HTTP (Navegador y Postman)
                 .csrf(ServerHttpSecurity.CsrfSpec::disable);//Esta linea es para evitar errores de token en los POST
@@ -46,4 +46,21 @@ public class CustomSecurityWebFluxConfiguration {
                 .build();
         return new MapReactiveUserDetailsService(user, admin);
     }
+
+        /*@Bean
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity httpSecurity){
+        httpSecurity.authorizeExchange(exchanges -> exchanges.anyExchange().authenticated())
+                .httpBasic(Customizer.withDefaults());
+                //.csrf(ServerHttpSecurity.CsrfSpec::disable);
+        return httpSecurity.build();
+    }*/
+
+    /*public MapReactiveUserDetailsService userDetailsService(){
+        UserDetails user = User.withDefaultPasswordEncoder()
+                .username("usuarioPoderoso")
+                .password("contrasenaPoderosa")
+                .roles("USER")
+                .build();
+        return new MapReactiveUserDetailsService(user);
+    }*/
 }
